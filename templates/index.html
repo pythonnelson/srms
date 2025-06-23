@@ -1,0 +1,361 @@
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block title %} 
+  Student Record Management System
+{% endblock %} 
+
+{% block description %}
+  Comprehensive Student Record Management System for educational institutions
+{% endblock %} 
+
+{% block keywords %}
+  student management, 
+  academic records, 
+  education, 
+  school, 
+  administration
+{% endblock %} 
+
+{% block sidebar_toggle %}{% endblock %} 
+
+{% block search_bar %}{% endblock %} 
+{% block sidebar %}{% endblock %} 
+
+{% block page_title %}
+  <div class="pagetitle text-center mb-5">
+    <h1 class="display-4 text-primary mb-3">Student Record Management System</h1>
+    <p class="lead text-muted">
+      Streamline your educational institution&apos;s student data management
+    </p>
+  </div>
+{% endblock %} 
+
+{% block content %}
+  <section class="section">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="card border-0 shadow-lg">
+          <div
+            class="card-body p-5 text-center bg-gradient-primary text-white rounded"
+          >
+            <div class="row align-items-center">
+              <div class="col-lg-6">
+                <h2 class="display-5 fw-bold mb-4">Welcome to SRMS</h2>
+                <p class="lead mb-4">
+                  Our comprehensive Student Record Management System provides a
+                  centralized platform for managing student information, academic
+                  records, and administrative tasks with ease and efficiency.
+                </p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                  <a
+                    href="{% url 'students:student_login' %}"
+                    class="btn btn-light btn-lg px-4 py-2"
+                  >
+                    <i class="bi bi-mortarboard me-2"></i>
+                    Student Portal
+                  </a>
+                  <a
+                    href="{% url 'students:registrar_login' %}"
+                    class="btn btn-outline-light btn-lg px-4 py-2"
+                  >
+                    <i class="bi bi-gear me-2"></i>
+                    Admin Portal
+                  </a>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="position-relative">
+                  <i class="bi bi-book display-1 text-white-50"></i>
+                  <i
+                    class="bi bi-people position-absolute top-0 start-50 translate-middle display-3 text-warning"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <h3 class="text-center mb-5 text-primary">System Features</h3>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-5">
+      <!-- Student Management -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 shadow-sm border-0 hover-shadow">
+          <div class="card-body text-center p-4">
+            <div
+              class="feature-icon bg-primary bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+              style="width: 4rem; height: 4rem"
+            >
+              <i class="bi bi-people-fill text-white fs-2"></i>
+            </div>
+            <h5 class="card-title text-primary">Student Management</h5>
+            <p class="card-text text-muted">
+              Comprehensive student profiles with personal information, contact
+              details, and academic history tracking.
+            </p>
+            <ul class="list-unstyled text-start mt-3 small">
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i>Student
+                Registration
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i>Profile
+                Management
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i>Academic
+                History
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grade Management -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 shadow-sm border-0 hover-shadow">
+          <div class="card-body text-center p-4">
+            <div
+              class="feature-icon bg-success bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+              style="width: 4rem; height: 4rem"
+            >
+              <i class="bi bi-bar-chart-fill text-white fs-2"></i>
+            </div>
+            <h5 class="card-title text-success">Grade Management</h5>
+            <p class="card-text text-muted">
+              Efficient grade recording, transcript generation, and academic
+              performance analytics for better student outcomes.
+            </p>
+            <ul class="list-unstyled text-start mt-3 small">
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i>Grade
+                Recording
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i
+                >Transcript Generation
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i
+                >Performance Analytics
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Course Management -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 shadow-sm border-0 hover-shadow">
+          <div class="card-body text-center p-4">
+            <div
+              class="feature-icon bg-info bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+              style="width: 4rem; height: 4rem"
+            >
+              <i class="bi bi-journal-bookmark-fill text-white fs-2"></i>
+            </div>
+            <h5 class="card-title text-info">Course Management</h5>
+            <p class="card-text text-muted">
+              Organize courses, manage enrollment, track attendance, and maintain
+              detailed academic calendars.
+            </p>
+            <ul class="list-unstyled text-start mt-3 small">
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i>Course
+                Catalog
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i
+                >Enrollment Tracking
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i
+                >Attendance Management
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reports & Analytics -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 shadow-sm border-0 hover-shadow">
+          <div class="card-body text-center p-4">
+            <div
+              class="feature-icon bg-warning bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+              style="width: 4rem; height: 4rem"
+            >
+              <i class="bi bi-graph-up text-white fs-2"></i>
+            </div>
+            <h5 class="card-title text-warning">Reports & Analytics</h5>
+            <p class="card-text text-muted">
+              Generate comprehensive reports and gain insights through advanced
+              analytics and data visualization tools.
+            </p>
+            <ul class="list-unstyled text-start mt-3 small">
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i>Custom
+                Reports
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i>Data
+                Analytics
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i>Export
+                Options
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Communication -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 shadow-sm border-0 hover-shadow">
+          <div class="card-body text-center p-4">
+            <div
+              class="feature-icon bg-danger bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+              style="width: 4rem; height: 4rem"
+            >
+              <i class="bi bi-chat-dots-fill text-white fs-2"></i>
+            </div>
+            <h5 class="card-title text-danger">Communication Hub</h5>
+            <p class="card-text text-muted">
+              Streamlined communication between students, faculty, and
+              administration with integrated messaging system.
+            </p>
+            <ul class="list-unstyled text-start mt-3 small">
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i>Messaging
+                System
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i
+                >Notifications
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i
+                >Announcements
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security & Access -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 shadow-sm border-0 hover-shadow">
+          <div class="card-body text-center p-4">
+            <div
+              class="feature-icon bg-dark bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+              style="width: 4rem; height: 4rem"
+            >
+              <i class="bi bi-shield-lock-fill text-white fs-2"></i>
+            </div>
+            <h5 class="card-title text-dark">Security & Access</h5>
+            <p class="card-text text-muted">
+              Role-based access control, data encryption, and comprehensive audit
+              trails ensure data security and privacy.
+            </p>
+            <ul class="list-unstyled text-start mt-3 small">
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i
+                >Role-based Access
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i>Data
+                Encryption
+              </li>
+              <li>
+                <i class="bi bi-check-circle-fill text-success me-2"></i>Audit
+                Trails
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <div class="card bg-light border-0">
+          <div class="card-body p-5">
+            <h3 class="text-center mb-5 text-primary">System Statistics</h3>
+            <div class="row text-center">
+              <div class="col-lg-3 col-md-6 mb-4">
+                <div class="bg-white rounded p-4 shadow-sm">
+                  <i class="bi bi-people display-4 text-primary mb-3"></i>
+                  <h4 class="fw-bold text-primary">2,450+</h4>
+                  <p class="text-muted mb-0">Active Students</p>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 mb-4">
+                <div class="bg-white rounded p-4 shadow-sm">
+                  <i class="bi bi-journal-text display-4 text-success mb-3"></i>
+                  <h4 class="fw-bold text-success">180+</h4>
+                  <p class="text-muted mb-0">Available Courses</p>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 mb-4">
+                <div class="bg-white rounded p-4 shadow-sm">
+                  <i class="bi bi-person-badge display-4 text-info mb-3"></i>
+                  <h4 class="fw-bold text-info">95+</h4>
+                  <p class="text-muted mb-0">Faculty Members</p>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 mb-4">
+                <div class="bg-white rounded p-4 shadow-sm">
+                  <i class="bi bi-award display-4 text-warning mb-3"></i>
+                  <h4 class="fw-bold text-warning">1,200+</h4>
+                  <p class="text-muted mb-0">Graduates</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card bg-primary text-white border-0">
+          <div class="card-body p-5 text-center">
+            <h3 class="mb-4">Ready to Get Started?</h3>
+            <p class="lead mb-4">
+              Join thousands of educational institutions already using our Student
+              Record Management System to streamline their operations.
+            </p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+              <a
+                href="{% url 'students:student_login' %}"
+                class="btn btn-light btn-lg px-4"
+              >
+                <i class="bi bi-mortarboard me-2"></i>
+                Student Access
+              </a>
+              <a
+                href="{% url 'students:registrar_login' %}"
+                class="btn btn-outline-light btn-lg px-4"
+              >
+                <i class="bi bi-person-badge me-2"></i>
+                Registrar Access
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %} 

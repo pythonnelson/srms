@@ -1,0 +1,8 @@
+{
+  "[html]": {
+    "editor.defaultFormatter": null
+  },
+  "[django-html]": {
+    "editor.defaultFormatter": null
+  }
+}

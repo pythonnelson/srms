@@ -1,0 +1,664 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Registrar Dashboard - SRMS{% endblock %}
+
+{% block page_heading %}
+  <div class="d-flex align-items-center justify-content-between">
+    <h1>Registrar Dashboard</h1>
+    <div class="welcome-message">
+      <small class="text-muted">Welcome back, <strong>{{ registrar.user.first_name|default:"Registrar" }}</strong></small>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+<section class="section dashboard">
+  <div class="row">
+    <!-- Statistics Cards -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card info-card sales-card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title d-flex align-items-center">
+            <i class="bi bi-people me-2"></i>
+            Total Students
+          </h5>
+          <div class="d-flex align-items-center">
+            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+              <i class="bi bi-people"></i>
+            </div>
+            <div class="ps-3">
+              <h6 class="mb-1">{{ students.count }}</h6>
+              <span class="text-success small pt-1 fw-bold">Active</span>
+              <span class="text-muted small pt-2 ps-1">students</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card info-card revenue-card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title d-flex align-items-center">
+            <i class="bi bi-building me-2"></i>
+            Departments
+          </h5>
+          <div class="d-flex align-items-center">
+            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+              <i class="bi bi-building"></i>
+            </div>
+            <div class="ps-3">
+              <h6 class="mb-1">5</h6>
+              <span class="text-info small pt-1 fw-bold">Active</span>
+              <span class="text-muted small pt-2 ps-1">departments</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card info-card customers-card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title d-flex align-items-center">
+            <i class="bi bi-mortarboard me-2"></i>
+            Programs
+          </h5>
+          <div class="d-flex align-items-center">
+            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+              <i class="bi bi-mortarboard"></i>
+            </div>
+            <div class="ps-3">
+              <h6 class="mb-1">4</h6>
+              <span class="text-warning small pt-1 fw-bold">Available</span>
+              <span class="text-muted small pt-2 ps-1">programs</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card info-card h-100 shadow-sm" style="border-left: 4px solid #e74c3c;">
+        <div class="card-body">
+          <h5 class="card-title d-flex align-items-center">
+            <i class="bi bi-calendar-plus me-2"></i>
+            New This Month
+          </h5>
+          <div class="d-flex align-items-center">
+            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center" style="background: rgba(231, 76, 60, 0.1); color: #e74c3c;">
+              <i class="bi bi-person-plus"></i>
+            </div>
+            <div class="ps-3">
+              <h6 class="mb-1">{{ new_students_count|default:"0" }}</h6>
+              <span class="text-danger small pt-1 fw-bold">New</span>
+              <span class="text-muted small pt-2 ps-1">registrations</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title d-flex align-items-center mb-4">
+            <i class="bi bi-lightning-charge me-2"></i>
+            Quick Actions
+          </h5>
+          <div class="row g-3">
+            <div class="col-md-2 col-sm-4">
+              <a href="#" class="btn btn-outline-primary w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
+                <i class="bi bi-person-plus mb-2" style="font-size: 1.5rem;"></i>
+                <span>Add Student</span>
+              </a>
+            </div>
+            <div class="col-md-2 col-sm-4">
+              <a href="#" class="btn btn-outline-success w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
+                <i class="bi bi-file-earmark-excel mb-2" style="font-size: 1.5rem;"></i>
+                <span>Export Data</span>
+              </a>
+            </div>
+            <div class="col-md-2 col-sm-4">
+              <a href="#" class="btn btn-outline-info w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
+                <i class="bi bi-upload mb-2" style="font-size: 1.5rem;"></i>
+                <span>Import Students</span>
+              </a>
+            </div>
+            <div class="col-md-2 col-sm-4">
+              <a href="#" class="btn btn-outline-warning w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
+                <i class="bi bi-graph-up mb-2" style="font-size: 1.5rem;"></i>
+                <span>Reports</span>
+              </a>
+            </div>
+            <div class="col-md-2 col-sm-4">
+              <a href="#" class="btn btn-outline-secondary w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
+                <i class="bi bi-gear mb-2" style="font-size: 1.5rem;"></i>
+                <span>Settings</span>
+              </a>
+            </div>
+            <div class="col-md-2 col-sm-4">
+              <a href="#" class="btn btn-outline-danger w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
+                <i class="bi bi-shield-check mb-2" style="font-size: 1.5rem;"></i>
+                <span>Archive</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Students Management -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="card-title d-flex align-items-center mb-0">
+              <i class="bi bi-people me-2"></i>
+              Student Management
+            </h5>
+            <div class="d-flex gap-2">
+              <button class="btn btn-outline-secondary btn-sm" id="toggleView">
+                <i class="bi bi-grid-3x3-gap me-1"></i>
+                Card View
+              </button>
+              <button class="btn btn-primary btn-sm">
+                <i class="bi bi-person-plus me-1"></i>
+                Add New Student
+              </button>
+            </div>
+          </div>
+
+          <!-- Search and Filter -->
+          <div class="row mb-4">
+            <div class="col-md-4">
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control" placeholder="Search students..." id="searchInput">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="departmentFilter">
+                <option value="">All Departments</option>
+                <option value="computer_science">Computer Science</option>
+                <option value="engineering">Engineering</option>
+                <option value="business_information">Business Information</option>
+                <option value="law">Law</option>
+                <option value="medicine">Medicine</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="levelFilter">
+                <option value="">All Levels</option>
+                <option value="year_1">Year 1</option>
+                <option value="year_2">Year 2</option>
+                <option value="year_3">Year 3</option>
+                <option value="year_4">Year 4</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-outline-secondary w-100" id="clearFilters">
+                <i class="bi bi-x-circle me-1"></i>
+                Clear
+              </button>
+            </div>
+          </div>
+
+          <!-- Card View -->
+          <div id="cardView" class="row">
+            {% for student in students %}
+            <div class="col-xl-4 col-md-6 mb-4 student-card" 
+                 data-department="{{ student.department }}" 
+                 data-level="{{ student.academic_level }}"
+                 data-search="{{ student.first_name|lower }} {{ student.last_name|lower }} {{ student.email|lower }}">
+              <div class="card h-100 shadow-sm border-start border-4 border-primary">
+                <div class="card-body">
+                  <div class="d-flex align-items-start justify-content-between mb-3">
+                    <div class="d-flex align-items-center">
+                      {% if student.profile_picture %}
+                        <img src="{{ student.profile_picture.url }}" alt="Profile" 
+                             class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                      {% else %}
+                        <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3" 
+                             style="width: 50px; height: 50px;">
+                          <i class="bi bi-person text-white"></i>
+                        </div>
+                      {% endif %}
+                      <div>
+                        <h6 class="mb-1">{{ student.first_name }} {{ student.last_name }}</h6>
+                        <small class="text-muted">{{ student.email }}</small>
+                      </div>
+                    </div>
+                    <div class="dropdown">
+                      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" 
+                              data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical"></i>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>View Details</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#" onclick="confirmDelete('{{ student.id }}', '{{ student.first_name }} {{ student.last_name }}')">
+                          <i class="bi bi-trash me-2"></i>Delete</a></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="row text-center mb-3">
+                    <div class="col-4">
+                      <small class="text-muted d-block">Department</small>
+                      <span class="badge bg-primary-subtle text-primary">{{ student.get_department_display|truncatechars:8 }}</span>
+                    </div>
+                    <div class="col-4">
+                      <small class="text-muted d-block">Level</small>
+                      <span class="badge bg-success-subtle text-success">{{ student.get_academic_level_display }}</span>
+                    </div>
+                    <div class="col-4">
+                      <small class="text-muted d-block">Program</small>
+                      <span class="badge bg-info-subtle text-info">{{ student.get_program_display|truncatechars:8 }}</span>
+                    </div>
+                  </div>
+
+                  <div class="border-top pt-3">
+                    <div class="row">
+                      <div class="col-6">
+                        <small class="text-muted">Faculty:</small>
+                        <div class="fw-semibold">{{ student.get_faculty_display|truncatechars:15 }}</div>
+                      </div>
+                      <div class="col-6">
+                        <small class="text-muted">Joined:</small>
+                        <div class="fw-semibold">{{ student.created_at|date:"M Y" }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+              <div class="text-center py-5">
+                <i class="bi bi-people" style="font-size: 4rem; color: #ccc;"></i>
+                <h5 class="mt-3 text-muted">No Students Found</h5>
+                <p class="text-muted">There are no students registered yet.</p>
+                <a href="#" class="btn btn-primary">
+                  <i class="bi bi-person-plus me-2"></i>
+                  Add First Student
+                </a>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- Table View -->
+          <div id="tableView" style="display: none;">
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Student</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Program</th>
+                    <th scope="col">Level</th>
+                    <th scope="col">Faculty</th>
+                    <th scope="col">Joined</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for student in students %}
+                  <tr class="student-row" 
+                      data-department="{{ student.department }}" 
+                      data-level="{{ student.academic_level }}"
+                      data-search="{{ student.first_name|lower }} {{ student.last_name|lower }} {{ student.email|lower }}">
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        {% if student.profile_picture %}
+                          <img src="{{ student.profile_picture.url }}" alt="Profile" 
+                               class="rounded-circle me-2" style="width: 32px; height: 32px; object-fit: cover;">
+                        {% else %}
+                          <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-2" 
+                               style="width: 32px; height: 32px;">
+                            <i class="bi bi-person text-white" style="font-size: 0.8rem;"></i>
+                          </div>
+                        {% endif %}
+                        <div>
+                          <div class="fw-semibold">{{ student.first_name }} {{ student.last_name }}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{ student.email }}</td>
+                    <td>
+                      <span class="badge bg-primary-subtle text-primary">{{ student.get_department_display }}</span>
+                    </td>
+                    <td>{{ student.get_program_display }}</td>
+                    <td>
+                      <span class="badge bg-success-subtle text-success">{{ student.get_academic_level_display }}</span>
+                    </td>
+                    <td>{{ student.get_faculty_display }}</td>
+                    <td>{{ student.created_at|date:"M d, Y" }}</td>
+                    <td>
+                      <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-sm btn-outline-primary" title="View Details">
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" title="Edit">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" title="Delete"
+                                onclick="confirmDelete('{{ student.id }}', '{{ student.first_name }} {{ student.last_name }}')">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="9" class="text-center py-5">
+                      <i class="bi bi-people" style="font-size: 3rem; color: #ccc;"></i>
+                      <div class="mt-3">
+                        <h6 class="text-muted">No Students Found</h6>
+                        <p class="text-muted mb-0">There are no students registered yet.</p>
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">
+          <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+          Confirm Deletion
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-3">Are you sure you want to delete the student <strong id="studentName"></strong>?</p>
+        <div class="alert alert-warning" role="alert">
+          <i class="bi bi-info-circle me-2"></i>
+          This action cannot be undone. All student data will be permanently deleted.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <form method="post" id="deleteForm" class="d-inline">
+          {% csrf_token %}
+          <input type="hidden" name="student_id" id="studentIdInput">
+          <button type="submit" class="btn btn-danger">
+            <i class="bi bi-trash me-2"></i>
+            Delete Student
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Success/Info Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-success text-white">
+      <i class="bi bi-check-circle me-2"></i>
+      <strong class="me-auto">Success</strong>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="toastMessage">
+      Operation completed successfully!
+    </div>
+  </div>
+</div>
+
+<script>
+// Toggle between card and table view
+document.getElementById('toggleView').addEventListener('click', function() {
+    const cardView = document.getElementById('cardView');
+    const tableView = document.getElementById('tableView');
+    const toggleBtn = this;
+    
+    if (cardView.style.display === 'none') {
+        cardView.style.display = 'block';
+        tableView.style.display = 'none';
+        toggleBtn.innerHTML = '<i class="bi bi-grid-3x3-gap me-1"></i>Card View';
+    } else {
+        cardView.style.display = 'none';
+        tableView.style.display = 'block';
+        toggleBtn.innerHTML = '<i class="bi bi-table me-1"></i>Table View';
+    }
+});
+
+// Search functionality
+document.getElementById('searchInput').addEventListener('keyup', function() {
+    const searchTerm = this.value.toLowerCase();
+    filterStudents();
+});
+
+// Department filter
+document.getElementById('departmentFilter').addEventListener('change', function() {
+    filterStudents();
+});
+
+// Level filter
+document.getElementById('levelFilter').addEventListener('change', function() {
+    filterStudents();
+});
+
+// Clear filters
+document.getElementById('clearFilters').addEventListener('click', function() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('departmentFilter').value = '';
+    document.getElementById('levelFilter').value = '';
+    filterStudents();
+});
+
+// Filter function
+function filterStudents() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const departmentFilter = document.getElementById('departmentFilter').value;
+    const levelFilter = document.getElementById('levelFilter').value;
+    
+    // Filter cards
+    const cards = document.querySelectorAll('.student-card');
+    let visibleCards = 0;
+    cards.forEach(card => {
+        const searchData = card.getAttribute('data-search');
+        const department = card.getAttribute('data-department');
+        const level = card.getAttribute('data-level');
+        
+        const matchesSearch = searchTerm === '' || searchData.includes(searchTerm);
+        const matchesDepartment = departmentFilter === '' || department === departmentFilter;
+        const matchesLevel = levelFilter === '' || level === levelFilter;
+        
+        if (matchesSearch && matchesDepartment && matchesLevel) {
+            card.style.display = 'block';
+            visibleCards++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    // Filter table rows
+    const rows = document.querySelectorAll('.student-row');
+    let visibleRows = 0;
+    rows.forEach(row => {
+        const searchData = row.getAttribute('data-search');
+        const department = row.getAttribute('data-department');
+        const level = row.getAttribute('data-level');
+        
+        const matchesSearch = searchTerm === '' || searchData.includes(searchTerm);
+        const matchesDepartment = departmentFilter === '' || department === departmentFilter;
+        const matchesLevel = levelFilter === '' || level === levelFilter;
+        
+        if (matchesSearch && matchesDepartment && matchesLevel) {
+            row.style.display = 'table-row';
+            visibleRows++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+    
+    // Show/hide empty state
+    const cardView = document.getElementById('cardView');
+    const tableView = document.getElementById('tableView');
+    const emptyStateCard = cardView.querySelector('.col-12');
+    const emptyStateTable = tableView.querySelector('tr td[colspan="9"]');
+    
+    if (cardView.style.display !== 'none' && visibleCards === 0 && cards.length > 0) {
+        // Show "No results found" message
+        showNoResultsMessage();
+    }
+}
+
+// Show no results message
+function showNoResultsMessage() {
+    // Implementation for showing no results message
+    console.log('No results found');
+}
+
+// Delete confirmation
+function confirmDelete(studentId, studentName) {
+    document.getElementById('studentName').textContent = studentName;
+    document.getElementById('studentIdInput').value = studentId;
+    
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    deleteModal.show();
+}
+
+// Handle real delete form submission
+document.getElementById('deleteForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const studentId = document.getElementById('studentIdInput').value;
+    
+    // Show loading state
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Deleting...';
+    submitBtn.disabled = true;
+    
+    // Create form data
+    const formData = new FormData();
+    formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+    formData.append('student_id', studentId);
+    
+    // Send DELETE request
+    fetch(`/register/delete/${studentId}/`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // Close modal first
+            const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+            deleteModal.hide();
+            
+            // Show success message
+            showToast('Student deleted successfully!', 'success');
+            
+            // Remove the student from the UI
+            removeStudentFromUI(studentId);
+            
+            // Optional: Redirect after a delay
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        } else {
+            throw new Error('Network response was not ok');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('An error occurred while deleting the student. Please try again.', 'danger');
+        
+        // Reset button state
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    });
+});
+
+// Remove student from UI
+function removeStudentFromUI(studentId) {
+    // Remove from card view
+    const studentCard = document.querySelector(`.student-card[data-student-id="${studentId}"]`);
+    if (studentCard) {
+        studentCard.remove();
+    }
+    
+    // Remove from table view
+    const studentRow = document.querySelector(`.student-row[data-student-id="${studentId}"]`);
+    if (studentRow) {
+        studentRow.remove();
+    }
+    
+    // Update counters
+    updateStudentCounter();
+}
+
+// Update student counter
+function updateStudentCounter() {
+    const remainingCards = document.querySelectorAll('.student-card').length;
+    const counterElement = document.querySelector('.card-body h6');
+    if (counterElement) {
+        counterElement.textContent = remainingCards;
+    }
+}
+
+// Show toast notification
+function showToast(message, type = 'success') {
+    const toastElement = document.getElementById('successToast');
+    const toastHeader = toastElement.querySelector('.toast-header');
+    const toastMessage = document.getElementById('toastMessage');
+    
+    // Update toast styling based on type
+    toastHeader.className = `toast-header bg-${type} text-white`;
+    toastMessage.textContent = message;
+    
+    // Show toast
+    const toast = new bootstrap.Toast(toastElement);
+    toast.show();
+}
+
+// Handle quick action buttons (placeholder functionality)
+document.addEventListener('DOMContentLoaded', function() {
+    // Add click handlers for quick action buttons
+    const quickActionButtons = document.querySelectorAll('.row.g-3 .btn');
+    quickActionButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const actionName = this.querySelector('span').textContent;
+            showToast(`${actionName} feature coming soon!`, 'info');
+        });
+    });
+});
+
+// Initialize tooltips
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+});
+</script>
+
+{% endblock %}

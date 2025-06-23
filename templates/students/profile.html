@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Student Dashboard - SRMS{% endblock %}
+
+{% block page_heading %}
+  <div class="d-flex align-items-center justify-content-between">
+    <h1>Student Dashboard</h1>
+    <div class="welcome-message">
+      <small class="text-muted">Welcome back, <strong>{{ student.first_name }}</strong></small>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+<section class="section dashboard">
+  <div class="container">
+        <section
+          class="section register d-flex flex-column align-items-center justify-content-center py-4"
+        >
+          <div class="container">
+            <div class="row justify-content-center">
+              <div
+                class="col-lg-8 col-md-10 d-flex flex-column align-items-center justify-content-center"
+              >
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <div class="pt-4 pb-2">
+                      <h5 class="card-title text-center pb-0 fs-4">
+                        Update Profile
+                      </h5>
+                    </div>
+
+                    <!-- Display messages -->
+                    {% include 'messages.html' %}
+
+                    <form method="post" enctype="multipart/form-data" class="row g-3 needs-validation" novalidate>
+                      {% csrf_token %}
+                      
+                      <!-- Profile Picture Section -->
+                      <div class="col-12">
+                        <h6 class="text-muted border-bottom pb-2">Profile Information</h6>
+                      </div>
+
+                      <div class="col-12 text-center mb-3">
+                        {% if student.profile_picture %}
+                          <img src="{{ student.profile_picture.url }}" alt="Profile Picture" 
+                               class="rounded-circle mb-3" style="width: 120px; height: 120px; object-fit: cover;">
+                        {% else %}
+                          <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                               style="width: 120px; height: 120px;">
+                            <i class="bi bi-person-circle text-muted" style="font-size: 60px;"></i>
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-12">
+                        <label for="{{ form.profile_picture.id_for_label }}" class="form-label">Profile Picture</label>
+                        {{ form.profile_picture }}
+                        <small class="form-text text-muted">Allowed formats: JPG, JPEG, PNG. Max size: 5MB</small>
+                        {% if form.profile_picture.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.profile_picture.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <!-- Personal Information Section -->
+                      <div class="col-12 mt-4">
+                        <h6 class="text-muted border-bottom pb-2">Personal Information</h6>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.first_name.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.last_name.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-12">
+                        <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.email.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-12">
+                        <label for="{{ form.residential_address.id_for_label }}" class="form-label">Residential Address</label>
+                        {{ form.residential_address }}
+                        {% if form.residential_address.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.residential_address.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <!-- Academic Information Section -->
+                      <div class="col-12 mt-4">
+                        <h6 class="text-muted border-bottom pb-2">Academic Information</h6>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="{{ form.faculty.id_for_label }}" class="form-label">Faculty</label>
+                        {{ form.faculty }}
+                        {% if form.faculty.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.faculty.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="{{ form.department.id_for_label }}" class="form-label">Department</label>
+                        {{ form.department }}
+                        {% if form.department.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.department.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="{{ form.program.id_for_label }}" class="form-label">Program</label>
+                        {{ form.program }}
+                        {% if form.program.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.program.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="{{ form.academic_level.id_for_label }}" class="form-label">Academic Level</label>
+                        {{ form.academic_level }}
+                        {% if form.academic_level.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.academic_level.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <!-- CV Upload Section -->
+                      <div class="col-12 mt-4">
+                        <h6 class="text-muted border-bottom pb-2">Documents</h6>
+                      </div>
+
+                      <div class="col-12">
+                        <label for="{{ form.cv.id_for_label }}" class="form-label">CV/Resume</label>
+                        {{ form.cv }}
+                        {% if student.cv %}
+                          <div class="mt-2">
+                            <small class="text-success">
+                              <i class="bi bi-file-earmark-pdf"></i> 
+                              Current CV: <a href="{{ student.cv.url }}" target="_blank" class="text-decoration-none">View CV</a>
+                            </small>
+                          </div>
+                        {% endif %}
+                        <small class="form-text text-muted">Allowed format: PDF only. Max size: 10MB</small>
+                        {% if form.cv.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.cv.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <!-- Display non-field errors -->
+                      {% if form.non_field_errors %}
+                        <div class="col-12">
+                          <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        </div>
+                      {% endif %}
+
+                      <div class="col-12 mt-4">
+                        <button class="btn btn-primary w-100" type="submit">
+                          <i class="bi bi-person-check"></i> Update Profile
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+</section>
+{% endblock %}

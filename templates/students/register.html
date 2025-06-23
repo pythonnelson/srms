@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} 
+  Register | Student Management System
+{% endblock %}
+
+{% block description %}
+  Comprehensive Student Record Management System for educational institutions
+{% endblock %} 
+
+{% block keywords %}
+  student management, 
+  academic records, 
+  education, 
+  school, 
+  administration
+{% endblock %} 
+
+{% block sidebar_toggle %}{% endblock %} 
+{% block header %}{% endblock %}
+{% block search_bar %}{% endblock %} 
+
+{% block login_type %}{% endblock %}
+{% block sidebar %}{% endblock %} 
+
+{% block page_title %}{% endblock %}
+
+{% block content %}
+  <main>
+      <div class="container">
+        <section
+          class="section register d-flex flex-column align-items-center justify-content-center py-4"
+        >
+          <div class="container">
+            <div class="row justify-content-center">
+              <div
+                class="col-lg-8 col-md-10 d-flex flex-column align-items-center justify-content-center"
+              >
+                <div class="d-flex justify-content-center py-4">
+                  <a
+                    href="/"
+                    class="logo d-flex align-items-center w-auto"
+                  >
+                    <img src="{% static '/img/logo.png' %}" alt="logo" />
+                    <span class="d-none d-lg-block">SRMS</span>
+                  </a>
+                </div>
+                <!-- End Logo -->
+
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <div class="pt-4 pb-2">
+                      <h5 class="card-title text-center pb-0 fs-4">
+                        Register as a student
+                      </h5>
+                      <p class="text-center small">
+                        Create a free account to get started with us
+                      </p>
+                    </div>
+
+                    <!-- Display messages -->
+                    {% include 'messages.html' %}
+
+                    <form method="post" class="row g-3 needs-validation" novalidate>
+                      {% csrf_token %}
+                      
+                      <!-- Account Information Section -->
+                      <div class="col-12">
+                        <h6 class="text-muted border-bottom pb-2">Account Information</h6>
+                      </div>
+
+                      <div class="col-12">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
+                        <div class="input-group has-validation">
+                          <span class="input-group-text" id="inputGroupPrepend">@</span>
+                          {{ form.username }}
+                          {% if form.username.errors %}
+                            <div class="invalid-feedback d-block">
+                              {% for error in form.username.errors %}
+                                {{ error }}
+                              {% endfor %}
+                            </div>
+                          {% endif %}
+                        </div>
+                      </div>
+
+                      <div class="col-12">
+                        <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.email.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="{{ form.password1.id_for_label }}" class="form-label">Password</label>
+                        {{ form.password1 }}
+                        {% if form.password1.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.password1.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="{{ form.password2.id_for_label }}" class="form-label">Confirm Password</label>
+                        {{ form.password2 }}
+                        {% if form.password2.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.password2.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <!-- Personal Information Section -->
+                      <div class="col-12 mt-4">
+                        <h6 class="text-muted border-bottom pb-2">Personal Information</h6>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.first_name.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.last_name.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-12">
+                        <label for="{{ form.residential_address.id_for_label }}" class="form-label">Residential Address</label>
+                        {{ form.residential_address }}
+                        {% if form.residential_address.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.residential_address.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <!-- Academic Information Section -->
+                      <div class="col-12 mt-4">
+                        <h6 class="text-muted border-bottom pb-2">Academic Information</h6>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="{{ form.faculty.id_for_label }}" class="form-label">Faculty</label>
+                        {{ form.faculty }}
+                        {% if form.faculty.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.faculty.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="{{ form.department.id_for_label }}" class="form-label">Department</label>
+                        {{ form.department }}
+                        {% if form.department.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.department.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="{{ form.program.id_for_label }}" class="form-label">Program</label>
+                        {{ form.program }}
+                        {% if form.program.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.program.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="{{ form.academic_level.id_for_label }}" class="form-label">Academic Level</label>
+                        {{ form.academic_level }}
+                        {% if form.academic_level.errors %}
+                          <div class="invalid-feedback d-block">
+                            {% for error in form.academic_level.errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+
+                      <!-- Display non-field errors -->
+                      {% if form.non_field_errors %}
+                        <div class="col-12">
+                          <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                              {{ error }}
+                            {% endfor %}
+                          </div>
+                        </div>
+                      {% endif %}
+
+                      <div class="col-12 mt-4">
+                        <button class="btn btn-primary w-100" type="submit">
+                          Register
+                        </button>
+                      </div>
+                      
+                      <div class="col-12">
+                        <p class="small mb-0 text-center">
+                          Already have an account?
+                          <a href="{% url 'students:student_login' %}">Login</a>
+                        </p>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+                <div class="credits">
+                  Designed by
+                  <a href="#">Sallieu A. Kamara</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+{% endblock %}
