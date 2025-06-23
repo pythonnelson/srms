@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.views.decorators.http import require_http_methods
 from .forms import *
 from .models import *
 
@@ -178,24 +179,54 @@ def registrar_dashboard(request):
     return render(request, 'registrar/dashboard.html', context)
 
 @login_required
+@require_http_methods(["GET", "POST"])
 def delete_student(request, student_id):
     # Ensure user is a registrar
     try:
         registrar = Registrar.objects.get(user=request.user)
     except Registrar.DoesNotExist:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({'success': False, 'message': 'Access denied. Registrars only.'}, status=403)
         messages.error(request, "Access denied. Registrars only.")
         return redirect('students:registrar_login')
     
     student = get_object_or_404(Student, id=student_id)
     
     if request.method == "POST":
-        user = student.user
-        student.delete()
-        user.delete()
-        messages.success(request, "Student record deleted successfully!")
-        return redirect('students:registrar_dashboard')
+        try:
+            # Store student name for success message
+            student_name = f"{student.first_name} {student.last_name}"
+            user = student.user
+            
+            # Delete student and associated user
+            student.delete()
+            user.delete()
+            
+            # Handle AJAX requests
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'success': True, 
+                    'message': f'Student {student_name} has been deleted successfully!'
+                })
+            
+            # Handle regular form submission
+            messages.success(request, f"Student {student_name} has been deleted successfully!")
+            return redirect('students:registrar_dashboard')
+            
+        except Exception as e:
+            # Handle any errors during deletion
+            error_message = f"An error occurred while deleting the student: {str(e)}"
+            
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({
+                    'success': False, 
+                    'message': error_message
+                }, status=500)
+            
+            messages.error(request, error_message)
+            return redirect('students:registrar_dashboard')
     
-    # If GET request, show confirmation page
+    # If GET request, show confirmation page (for non-AJAX requests)
     context = {'student': student}
     return render(request, "registrar/confirm_delete.html", context)
 

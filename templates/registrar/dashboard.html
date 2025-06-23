@@ -286,10 +286,6 @@
                 <i class="bi bi-people" style="font-size: 4rem; color: #ccc;"></i>
                 <h5 class="mt-3 text-muted">No Students Found</h5>
                 <p class="text-muted">There are no students registered yet.</p>
-                <a href="#" class="btn btn-primary">
-                  <i class="bi bi-person-plus me-2"></i>
-                  Add First Student
-                </a>
               </div>
             </div>
             {% endfor %}
@@ -410,6 +406,20 @@
           </button>
         </form>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container with multiple toast types -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-success text-white">
+      <i class="bi bi-check-circle me-2"></i>
+      <strong class="me-auto">Success</strong>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="toastMessage">
+      Operation completed successfully!
     </div>
   </div>
 </div>
@@ -543,7 +553,7 @@ function confirmDelete(studentId, studentName) {
     deleteModal.show();
 }
 
-// Handle real delete form submission
+// Handle delete form submission
 document.getElementById('deleteForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const studentId = document.getElementById('studentIdInput').value;
@@ -557,10 +567,9 @@ document.getElementById('deleteForm').addEventListener('submit', function(e) {
     // Create form data
     const formData = new FormData();
     formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
-    formData.append('student_id', studentId);
     
-    // Send DELETE request
-    fetch(`/register/delete/${studentId}/`, {
+    // Send DELETE request with correct URL format
+    fetch(`{% url 'students:delete_student' 0 %}`.replace('0', studentId), {
         method: 'POST',
         body: formData,
         headers: {
@@ -568,34 +577,124 @@ document.getElementById('deleteForm').addEventListener('submit', function(e) {
         }
     })
     .then(response => {
-        if (response.ok) {
-            // Close modal first
-            const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
-            deleteModal.hide();
-            
+        // Parse JSON response
+        return response.json().then(data => ({
+            status: response.status,
+            ok: response.ok,
+            data: data
+        }));
+    })
+    .then(({status, ok, data}) => {
+        // Close modal first
+        const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+        deleteModal.hide();
+        
+        if (ok && data.success) {
             // Show success message
-            showToast('Student deleted successfully!', 'success');
+            showToast(data.message, 'success');
+            window.reload()
             
             // Remove the student from the UI
             removeStudentFromUI(studentId);
             
-            // Optional: Redirect after a delay
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000);
+            // Update counters
+            updateStudentCounter();
         } else {
-            throw new Error('Network response was not ok');
+            // Show error message
+            showToast(data.message || 'An error occurred while deleting the student.', 'danger');
         }
+        
+        // Reset button state
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
     })
     .catch(error => {
         console.error('Error:', error);
-        showToast('An error occurred while deleting the student. Please try again.', 'danger');
+        
+        // Close modal
+        const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+        deleteModal.hide();
+        
+        showToast('A network error occurred. Please try again.', 'danger');
         
         // Reset button state
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
     });
 });
+
+// Remove student from UI
+function removeStudentFromUI(studentId) {
+    // Remove from card view - look for cards containing the student ID
+    const studentCards = document.querySelectorAll('.student-card');
+    studentCards.forEach(card => {
+        // Check if this card contains a dropdown with the matching student ID
+        const deleteLink = card.querySelector(`a[onclick*="${studentId}"]`);
+        if (deleteLink) {
+            card.remove();
+        }
+    });
+    
+    // Remove from table view
+    const studentRows = document.querySelectorAll('.student-row');
+    studentRows.forEach(row => {
+        // Check if this row contains a button with the matching student ID
+        const deleteButton = row.querySelector(`button[onclick*="${studentId}"]`);
+        if (deleteButton) {
+            row.remove();
+        }
+    });
+}
+
+// Update student counter
+function updateStudentCounter() {
+    const remainingCards = document.querySelectorAll('.student-card').length;
+    const counterElement = document.querySelector('.card-body h6');
+    if (counterElement) {
+        counterElement.textContent = remainingCards;
+    }
+}
+
+// Toast function with proper styling
+function showToast(message, type = 'success') {
+    const toastElement = document.getElementById('successToast');
+    const toastHeader = toastElement.querySelector('.toast-header');
+    const toastMessage = document.getElementById('toastMessage');
+    
+    // Remove existing classes and add new ones
+    toastHeader.classList.remove('bg-success', 'bg-danger', 'bg-info', 'bg-warning');
+    toastHeader.classList.add(`bg-${type}`, 'text-white');
+    
+    // Update icon based on type
+    const icon = toastHeader.querySelector('i');
+    icon.classList.remove('bi-check-circle', 'bi-exclamation-triangle', 'bi-info-circle');
+    
+    switch(type) {
+        case 'success':
+            icon.classList.add('bi-check-circle');
+            toastHeader.querySelector('strong').textContent = 'Success';
+            break;
+        case 'danger':
+            icon.classList.add('bi-exclamation-triangle');
+            toastHeader.querySelector('strong').textContent = 'Error';
+            break;
+        case 'info':
+            icon.classList.add('bi-info-circle');
+            toastHeader.querySelector('strong').textContent = 'Info';
+            break;
+        default:
+            icon.classList.add('bi-check-circle');
+            toastHeader.querySelector('strong').textContent = 'Notification';
+    }
+    
+    toastMessage.textContent = message;
+    
+    // Show toast
+    const toast = new bootstrap.Toast(toastElement, {
+        delay: 5000 // Show for 5 seconds
+    });
+    toast.show();
+}
 
 // Remove student from UI
 function removeStudentFromUI(studentId) {

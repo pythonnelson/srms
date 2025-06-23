@@ -155,7 +155,8 @@
                     <li>
                       <hr class="dropdown-divider" />
                     </li>
-                    <li>
+                    {% if user.student %}
+                      <li>
                       <a
                         class="dropdown-item d-flex align-items-center"
                         href="{% url 'students:student_profile' %}"
@@ -164,6 +165,7 @@
                         <span>My Profile</span>
                       </a>
                     </li>
+                    {% endif %}
                     <li>
                       <a
                         class="dropdown-item d-flex align-items-center"
@@ -253,12 +255,14 @@
 
         <li class="nav-heading">Pages</li>
 
-        <li class="nav-item">
-          <a class="nav-link collapsed" href="{% url 'students:student_profile' %}">
-            <i class="bi bi-card-list"></i>
-            <span>Profile</span>
-          </a>
-        </li>
+        {% if user.student %}
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'students:student_profile' %}">
+              <i class="bi bi-card-list"></i>
+              <span>Profile</span>
+            </a>
+          </li>
+        {% endif %}
         <!-- End Register Page Nav -->
       </ul>
     </aside>

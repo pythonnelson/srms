@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Delete Student | Registrar Dashboard
+{% endblock %}
+
+{% block content %}
+<main>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title text-danger">
+              <i class="bi bi-exclamation-triangle"></i>
+              Delete Student Record
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="alert alert-warning" role="alert">
+              <h6 class="alert-heading">Warning!</h6>
+              <p>You are about to permanently delete the following student record:</p>
+              <hr>
+              <div class="row">
+                <div class="col-md-3">
+                  {% if student.profile_picture %}
+                    <img src="{{ student.profile_picture.url }}" 
+                         alt="{{ student.first_name }}" 
+                         class="img-thumbnail" 
+                         style="max-width: 100px;">
+                  {% else %}
+                    <div class="bg-secondary text-white d-flex align-items-center justify-content-center" 
+                         style="width: 100px; height: 100px;">
+                      <i class="bi bi-person-fill" style="font-size: 2rem;"></i>
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="col-md-9">
+                  <h6><strong>{{ student.first_name }} {{ student.last_name }}</strong></h6>
+                  <p class="mb-1"><strong>Email:</strong> {{ student.email }}</p>
+                  <p class="mb-1"><strong>Department:</strong> {{ student.get_department_display }}</p>
+                  <p class="mb-1"><strong>Faculty:</strong> {{ student.get_faculty_display }}</p>
+                  <p class="mb-1"><strong>Program:</strong> {{ student.get_program_display }}</p>
+                  <p class="mb-0"><strong>Academic Level:</strong> {{ student.get_academic_level_display }}</p>
+                </div>
+              </div>
+              <hr>
+              <p class="mb-0">
+                <strong>This action cannot be undone.</strong> 
+                All student data including uploaded files will be permanently deleted.
+              </p>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <a href="{% url 'students:registrar_dashboard' %}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> Cancel
+              </a>
+              
+              <form method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">
+                  <i class="bi bi-trash"></i> Delete Student
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
