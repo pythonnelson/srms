@@ -57,7 +57,6 @@ def test_registrar_setup():
     print("\n4. Testing authentication...")
     test_users = [
         ("registrar", "Login@2024"),
-        # Add your registrar credentials here
     ]
     
     for username, password in test_users:

@@ -29,7 +29,7 @@ class Student(models.Model):
         ('year_3', "Year 3"),
         ('year_4', "Year 4"),
     ]
-    #  1 -> 1
+    #  1 -> 1 realtionship
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)

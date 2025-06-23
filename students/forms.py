@@ -19,7 +19,7 @@ class StudentRegistrationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Apply Bootstrap classes to all fields
+        # Applying Bootstrap classes to all fields
         for field_name, field in self.fields.items():
             if field_name == 'residential_address':
                 field.widget.attrs.update({
