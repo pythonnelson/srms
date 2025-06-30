@@ -28,7 +28,7 @@
               <i class="bi bi-people"></i>
             </div>
             <div class="ps-3">
-              <h6 class="mb-1">{{ students.count }}</h6>
+              <h6 class="mb-1" id="studentCounter">{{ students.count }}</h6>
               <span class="text-success small pt-1 fw-bold">Active</span>
               <span class="text-muted small pt-2 ps-1">students</span>
             </div>
@@ -168,10 +168,6 @@
                 <i class="bi bi-grid-3x3-gap me-1"></i>
                 Card View
               </button>
-              <button class="btn btn-primary btn-sm">
-                <i class="bi bi-person-plus me-1"></i>
-                Add New Student
-              </button>
             </div>
           </div>
 
@@ -214,6 +210,7 @@
           <div id="cardView" class="row">
             {% for student in students %}
             <div class="col-xl-4 col-md-6 mb-4 student-card" 
+                 data-student-id="{{ student.id }}"
                  data-department="{{ student.department }}" 
                  data-level="{{ student.academic_level }}"
                  data-search="{{ student.first_name|lower }} {{ student.last_name|lower }} {{ student.email|lower }}">
@@ -311,6 +308,7 @@
                 <tbody>
                   {% for student in students %}
                   <tr class="student-row" 
+                      data-student-id="{{ student.id }}"
                       data-department="{{ student.department }}" 
                       data-level="{{ student.academic_level }}"
                       data-search="{{ student.first_name|lower }} {{ student.last_name|lower }} {{ student.email|lower }}">
@@ -410,21 +408,7 @@
   </div>
 </div>
 
-<!-- Toast Container with multiple toast types -->
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-  <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header bg-success text-white">
-      <i class="bi bi-check-circle me-2"></i>
-      <strong class="me-auto">Success</strong>
-      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body" id="toastMessage">
-      Operation completed successfully!
-    </div>
-  </div>
-</div>
-
-<!-- Success/Info Toast -->
+<!-- Toast Container -->
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
   <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header bg-success text-white">
@@ -439,6 +423,9 @@
 </div>
 
 <script>
+// Store the delete URL pattern for use in JavaScript
+const DELETE_URL_PATTERN = "{% url 'students:delete_student' 0 %}";
+
 // Toggle between card and table view
 document.getElementById('toggleView').addEventListener('click', function() {
     const cardView = document.getElementById('cardView');
@@ -458,7 +445,6 @@ document.getElementById('toggleView').addEventListener('click', function() {
 
 // Search functionality
 document.getElementById('searchInput').addEventListener('keyup', function() {
-    const searchTerm = this.value.toLowerCase();
     filterStudents();
 });
 
@@ -525,23 +511,6 @@ function filterStudents() {
             row.style.display = 'none';
         }
     });
-    
-    // Show/hide empty state
-    const cardView = document.getElementById('cardView');
-    const tableView = document.getElementById('tableView');
-    const emptyStateCard = cardView.querySelector('.col-12');
-    const emptyStateTable = tableView.querySelector('tr td[colspan="9"]');
-    
-    if (cardView.style.display !== 'none' && visibleCards === 0 && cards.length > 0) {
-        // Show "No results found" message
-        showNoResultsMessage();
-    }
-}
-
-// Show no results message
-function showNoResultsMessage() {
-    // Implementation for showing no results message
-    console.log('No results found');
 }
 
 // Delete confirmation
@@ -564,12 +533,15 @@ document.getElementById('deleteForm').addEventListener('submit', function(e) {
     submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Deleting...';
     submitBtn.disabled = true;
     
+    // Create the delete URL
+    const deleteUrl = DELETE_URL_PATTERN.replace('0', studentId);
+    
     // Create form data
     const formData = new FormData();
     formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
     
-    // Send DELETE request with correct URL format
-    fetch(`{% url 'students:delete_student' 0 %}`.replace('0', studentId), {
+    // Send DELETE request
+    fetch(deleteUrl, {
         method: 'POST',
         body: formData,
         headers: {
@@ -577,22 +549,19 @@ document.getElementById('deleteForm').addEventListener('submit', function(e) {
         }
     })
     .then(response => {
-        // Parse JSON response
-        return response.json().then(data => ({
-            status: response.status,
-            ok: response.ok,
-            data: data
-        }));
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
     })
-    .then(({status, ok, data}) => {
+    .then(data => {
         // Close modal first
         const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
         deleteModal.hide();
         
-        if (ok && data.success) {
+        if (data.success) {
             // Show success message
             showToast(data.message, 'success');
-            window.reload()
             
             // Remove the student from the UI
             removeStudentFromUI(studentId);
@@ -625,37 +594,29 @@ document.getElementById('deleteForm').addEventListener('submit', function(e) {
 
 // Remove student from UI
 function removeStudentFromUI(studentId) {
-    // Remove from card view - look for cards containing the student ID
-    const studentCards = document.querySelectorAll('.student-card');
-    studentCards.forEach(card => {
-        // Check if this card contains a dropdown with the matching student ID
-        const deleteLink = card.querySelector(`a[onclick*="${studentId}"]`);
-        if (deleteLink) {
-            card.remove();
-        }
-    });
+    // Remove from card view using data-student-id
+    const studentCard = document.querySelector(`.student-card[data-student-id="${studentId}"]`);
+    if (studentCard) {
+        studentCard.remove();
+    }
     
-    // Remove from table view
-    const studentRows = document.querySelectorAll('.student-row');
-    studentRows.forEach(row => {
-        // Check if this row contains a button with the matching student ID
-        const deleteButton = row.querySelector(`button[onclick*="${studentId}"]`);
-        if (deleteButton) {
-            row.remove();
-        }
-    });
+    // Remove from table view using data-student-id
+    const studentRow = document.querySelector(`.student-row[data-student-id="${studentId}"]`);
+    if (studentRow) {
+        studentRow.remove();
+    }
 }
 
 // Update student counter
 function updateStudentCounter() {
     const remainingCards = document.querySelectorAll('.student-card').length;
-    const counterElement = document.querySelector('.card-body h6');
+    const counterElement = document.getElementById('studentCounter');
     if (counterElement) {
         counterElement.textContent = remainingCards;
     }
 }
 
-// Toast function with proper styling
+// Show toast notification
 function showToast(message, type = 'success') {
     const toastElement = document.getElementById('successToast');
     const toastHeader = toastElement.querySelector('.toast-header');
@@ -693,48 +654,6 @@ function showToast(message, type = 'success') {
     const toast = new bootstrap.Toast(toastElement, {
         delay: 5000 // Show for 5 seconds
     });
-    toast.show();
-}
-
-// Remove student from UI
-function removeStudentFromUI(studentId) {
-    // Remove from card view
-    const studentCard = document.querySelector(`.student-card[data-student-id="${studentId}"]`);
-    if (studentCard) {
-        studentCard.remove();
-    }
-    
-    // Remove from table view
-    const studentRow = document.querySelector(`.student-row[data-student-id="${studentId}"]`);
-    if (studentRow) {
-        studentRow.remove();
-    }
-    
-    // Update counters
-    updateStudentCounter();
-}
-
-// Update student counter
-function updateStudentCounter() {
-    const remainingCards = document.querySelectorAll('.student-card').length;
-    const counterElement = document.querySelector('.card-body h6');
-    if (counterElement) {
-        counterElement.textContent = remainingCards;
-    }
-}
-
-// Show toast notification
-function showToast(message, type = 'success') {
-    const toastElement = document.getElementById('successToast');
-    const toastHeader = toastElement.querySelector('.toast-header');
-    const toastMessage = document.getElementById('toastMessage');
-    
-    // Update toast styling based on type
-    toastHeader.className = `toast-header bg-${type} text-white`;
-    toastMessage.textContent = message;
-    
-    // Show toast
-    const toast = new bootstrap.Toast(toastElement);
     toast.show();
 }
 

@@ -39,7 +39,7 @@ class Student(models.Model):
     faculty = models.CharField(max_length=100, choices=FACULTY_CHOICES)
     program = models.CharField(max_length=100, choices=PROGRAM_CHOICES)
     academic_level = models.CharField(max_length=100, choices=ACADEMIC_LEVEL_CHOICES)
-    profile_picture = models.ImageField(
+    profile_picture = models.ImageField( 
         upload_to="profile_pictures/",
         validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png'])],
         blank=True,
@@ -63,3 +63,9 @@ class Registrar(models.Model):
 
     def __str__(self):
         return f"Registrar: {self.user.username}"
+    
+    # MVT => Model View Template
+
+    # MODEL -> Database Representation
+    # VIEWS -> Controllers 
+    # TEMPLATES -> User Interface

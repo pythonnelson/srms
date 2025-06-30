@@ -12,9 +12,9 @@ class Command(BaseCommand):
         parser.add_argument('--email', type=str, help='Email for the registrar')
 
     def handle(self, *args, **options):
-        username = options.get('username') or 'registrar'
+        username = options.get('username') or 'nelson'
         password = options.get('password') or 'admin123'
-        email = options.get('email') or 'registrar@example.com'
+        email = options.get('email') or 'nelson@example.com'
 
         # Check if user already exists
         if User.objects.filter(username=username).exists():

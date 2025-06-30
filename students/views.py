@@ -36,6 +36,7 @@ def student_login(request):
             # Strip whitespace from username
             username = username.strip()
             
+            # Authenticate the user
             user = authenticate(request, username=username, password=password)
 
             if user is not None:
@@ -49,7 +50,7 @@ def student_login(request):
                 if hasattr(user, 'student'):
                     try:
                         # Verify student profile exists and is accessible
-                        # student_profile = user.student
+                        student_profile = user.student
                         login(request, user)
                         
                         # Handle "Remember Me" functionality
@@ -66,8 +67,7 @@ def student_login(request):
                         if next_url:
                             return redirect(next_url)
                         
-                        return redirect('students:student_dashboard')
-                        
+                        return redirect('students:student_dashboard')  
                     except Exception as e:
                         messages.error(request, "Error accessing your student profile. Please contact administrator.")
                 else:
@@ -76,16 +76,15 @@ def student_login(request):
                 messages.error(request, "Invalid username or password.")
         else:
             messages.error(request, "Please enter both username and password.")
-    
     return render(request, "students/login.html")
 
-@login_required
+@login_required # Decorator
 def student_dashboard(request):
     # Check if user is a student
     if not hasattr(request.user, 'student'):
         messages.error(request, "Access denied. Students only.")
         return redirect('students:student_login')
-    
+    # session
     context = {
         'student': request.user.student
     }

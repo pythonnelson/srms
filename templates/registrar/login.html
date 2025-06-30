@@ -17,7 +17,8 @@
   administration
 {% endblock %} 
 
-{% block sidebar_toggle %}{% endblock %} 
+{% block sidebar_toggle %}
+{% endblock %} 
 {% block header %}{% endblock %}
 {% block search_bar %}{% endblock %} 
 
@@ -61,7 +62,7 @@
 
                     <!-- Display messages -->
                     {% include 'messages.html' %}
-
+                    
                     <form method="post" class="row g-3 needs-validation" novalidate>
                       {% csrf_token %}
                       

@@ -33,7 +33,7 @@ class StudentRegistrationForm(UserCreationForm):
                     'required': True
                 })
         
-        self.fields['username'].widget.attrs['placeholder'] = 'Enter username'
+        self.fields['username'].widget.attrs['placeholder'] = 'Enter username here'
         self.fields['email'].widget.attrs['placeholder'] = 'Enter email address'
         self.fields['first_name'].widget.attrs['placeholder'] = 'Enter first name'
         self.fields['last_name'].widget.attrs['placeholder'] = 'Enter last name'
@@ -87,7 +87,7 @@ class StudentProfileForm(forms.ModelForm):
         profile = self.cleaned_data.get('profile_picture')
 
         if profile:
-            if profile.size > 5 * 1024 * 1024: # 4 MB
+            if profile.size > 5 * 1024 * 1024: # 5 MB
                 raise forms.ValidationError("Image file is too large")
         return profile
         
